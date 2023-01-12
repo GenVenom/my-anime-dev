@@ -1,5 +1,8 @@
-from flask import Flask , render_template, request
+from flask import Flask , render_template
 from animesearch import get_results , get_season, get_info_by_id, get_large_image
+import json
+
+
 app = Flask(__name__)
 
 
