@@ -31,7 +31,8 @@ def get_season():
 
 def get_large_image(id):
     image = jikan.anime(id)['data']['images']['jpg']['large_image_url']
-    print(image)
+    return image
+
 def get_info_by_id (id):
     synopsis = jikan.anime(id)['data']['synopsis']
     
