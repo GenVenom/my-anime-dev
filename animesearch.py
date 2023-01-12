@@ -28,3 +28,7 @@ def get_season():
         results.append(Anime(mal_id, title,episodes,image_url,english_title,rating))
     return results
 
+def get_info_by_id (id):
+    synopsis = jikan.anime(id)['data']['synopsis']
+    
+    return synopsis
