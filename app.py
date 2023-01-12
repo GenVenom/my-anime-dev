@@ -11,10 +11,15 @@ def index():
 @app.route('/info/<int:id>')
 def info(id):
     synopsis = get_info_by_id(id)
-    im = get_large_image(id)
-    print (im)
+    img_url = get_large_image(id)
+    ctx = {
+        'img_url' : img_url,
+        'synopsis' : synopsis,
+        
+    }
+    
 
-    return render_template("anime_info.html",synopsis= synopsis)
+    return render_template("anime_info.html",context = ctx)
 
 
 
