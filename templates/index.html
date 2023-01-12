@@ -2,38 +2,7 @@
 <html>
   <head>
     <title>My anime</title>
-    <script>
-     const sqlite3 = require('sqlite3').verbose();
-
-let animeIds = [];
-
-// connect to the database
-let db = new sqlite3.Database('anime.db', sqlite3.OPEN_READONLY, (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Connected to the anime database.');
-});
-
-// fetch all the data from the "anime_id" column
-db.all("SELECT anime_id FROM anime", (err, rows) => {
-  if (err) {
-    throw err;
-  }
-  rows.forEach((row) => {
-    animeIds.push(row.anime_id);
-  });
-});
-
-// close the database connection
-db.close((err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Close the database connection.');
-});   
-    </script>
-    
+   
   </head>
   <body class="bg-black text-white">
     <div class=' flex items-center justify-center max-w-[1200px] mx-auto'>
@@ -44,6 +13,7 @@ db.close((err) => {
     {% for message in get_flashed_messages() %}
     {{message}}
     {% endfor %}
+    
     
     <div class="p-6 flex justify-center items-center w-full max-w-[1200px] mx-auto">
       <form method="POST" class='w-full'>
@@ -90,8 +60,8 @@ db.close((err) => {
 
     <div class="grid content-center justify-items-center w-screen max-w-[95%] lg:max-w-[1200px] mx-auto">
       <div class="grid lg:grid-cols-4 gap-10 grid-cols-2">
-        {% for i in season %}
-        <div class="lg:w-[250px] w-[400px] border border-gray-600 h-auto shadow-xl bg-[#100c08]">
+        {% for i in context['season'] %}
+        <div id= {{i.mal_id}} class="lg:w-[250px] w-[400px] border border-gray-600 h-auto shadow-xl bg-[#100c08]">
           <article class="group">
             <img
               alt="Lava"
@@ -113,9 +83,18 @@ db.close((err) => {
                 Episodes: {{i.episodes}} 
 
               </p>
+              {% if i.mal_id not in context['following_list'] %}
               <a href= {{url_for ('follow',id =i.mal_id)}}
                 class="button mt-2 text-sm font-medium text-orange-500 hover:text-orange-400"
                 >Follow</a>
+              {% else %}
+
+              <a href= {{url_for ('unfollow',id =i.mal_id)}}
+                class="button mt-2 text-sm font-medium text-orange-500 hover:text-orange-400"
+                >Unfollow</a>
+
+
+              {% endif %}
               </div>
               
             </div>
@@ -126,8 +105,10 @@ db.close((err) => {
       </div>
     </div>
 
+      
     {% endblock content %}
   
+    
     
 
   </body>
