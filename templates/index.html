@@ -3,7 +3,7 @@
   <head>
     <title>My anime</title>
   </head>
-  <body>
+  <body class="bg-black">
     <div class=' flex items-center justify-center max-w-[1200px] mx-auto'>
       <div class='w-full'> 
         {% extends "navbar.html" %} {% block content %}
@@ -40,11 +40,11 @@
             type="search"
             id="default-search"
             name="search-query"
-            class="block w-full p-4 pl-10 text-sm text-black-900 border border-gray-300 rounded-lg bg-black-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-white-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full p-4 pl-10 text-sm text-white bg-black border border-gray-700 rounded-lg bg-black-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-white-700 dark:border-white-600 dark:placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
           <button
             type="submit"
-            class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            class="text-white absolute right-2.5 bottom-2.5 bg-orange-500 hover:bg-orange-600 font-medium rounded-lg text-sm px-4 py-2 "
           >
             Search
           </button>
@@ -55,7 +55,7 @@
     <div class="grid content-center justify-items-center w-screen max-w-[95%] lg:max-w-[1200px] mx-auto">
       <div class="grid lg:grid-cols-4 gap-10 grid-cols-2">
         {% for i in season %}
-        <div class="lg:w-[250px] w-[400px] h-auto shadow-xl">
+        <div class="lg:w-[250px] w-[400px] border border-gray-600 h-auto shadow-xl bg-[#100c08]">
           <article class="group">
             <img
               alt="Lava"
@@ -65,17 +65,17 @@
             
             <div class="p-4">
               <a href="#">
-                <h3 class="text-lg font-medium text-gray-900 overflow-hidden max-h-[52px]">{{i.title}}</h3>
+                <h3 class="text-lg font-medium text-white overflow-hidden max-h-[52px]">{{i.title}}</h3>
               </a>
 
               <div class='flex justify-between items-center pt-2'>
                 <p
                 class="mt-2 text-sm leading-relaxed text-gray-500 line-clamp-3"
               >
-                Episodes: {{i.episodes}} - {{i.mal_id}}
+                <span class="font-bold text-orange-300">Episodes</span>: {{i.episodes}} - {{i.mal_id}}
               </p>
               <button
-                class="mt-2 text-sm font-medium text-blue-600 hover:text-blue-500"
+                class="mt-2 text-sm font-medium text-orange-500 hover:text-orange-400"
                 >Follow</button>
               </div>
               
