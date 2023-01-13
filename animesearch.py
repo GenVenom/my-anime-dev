@@ -28,6 +28,9 @@ def get_season():
         results.append(Anime(mal_id, title,episodes,image_url,english_title,rating))
     return results
 
+def get_episodes(id):
+    episodes = jikan.anime(id)['data']['episodes']
+    return episodes
 
 def get_large_image(id):
     image = jikan.anime(id)['data']['images']['jpg']['large_image_url']
@@ -35,5 +38,7 @@ def get_large_image(id):
 
 def get_info_by_id (id):
     synopsis = jikan.anime(id)['data']['synopsis']
-    
     return synopsis
+
+def get_download_url(id):
+    pass

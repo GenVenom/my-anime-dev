@@ -1,10 +1,10 @@
-from flask import Flask , render_template ,redirect,flash
-from animesearch import get_results , get_season, get_info_by_id, get_large_image
+from flask import Flask , render_template ,redirect,flash,Response
+from animesearch import get_results , get_season, get_info_by_id, get_large_image,get_episodes
 import sqlite3
-
+import requests
 
 app = Flask(__name__)
-app.secret_key= "hi"
+
 
 
 @app.route('/')
@@ -32,6 +32,7 @@ def info(id):
     ctx = {
         'img_url' : img_url,
         'synopsis' : synopsis,
+        'episodes': get_episodes(id)
         
     }
     
@@ -49,7 +50,7 @@ def follow(id):
         conn.commit()
         conn.close()
     except:
-        flash("You already follow this anime.")
+        pass
 
     return redirect(f"/#{id}")
 
@@ -61,7 +62,14 @@ def unfollow(id):
     conn.commit()
     conn.close()
     return redirect(f"/#{id}")
-if __name__ == "__main__":
-    app.run(debug=True)
 
-    
+@app.route('/video')
+def vide():
+    video_url = 'https://gogodownload.net/download.php?url=aHR0cHM6LyAdeqwrwedffryretgsdFrsftrsvfsfsr8xZGRjazAdrefsdsdfwerFrefdsfrersfdsrfer36343534JhcjBqLmdvY2RuYW5pLmNvbS91c2VyMTM0Mi9jNzUxYmFiMTkzOWEyYjgzMDIwNTY1ZTFhYzI0Mjg5Ni9FUC4xMDQyLnYwLjEwODBwLm1wND90b2tlbj12WDZJanc3cnMtYkVNX28wVnFQN2tBJmV4cGlyZXM9MTY3MzYwNTUyOSZpZD0xOTU0NjU='
+    return render_template("video_player.html",video_feed= video_url)
+
+
+if __name__ == "__main__":
+    app.run(debug=True,port=8000)
+
+

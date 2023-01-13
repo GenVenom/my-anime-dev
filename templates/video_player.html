@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href="https://cdn.plyr.io/3.6.2/plyr.css" rel="stylesheet">
+    <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+  </head>
+  <body>
+    <video id="my-player" controls>
+      <source src="{{video_feed}}" type="video/mp4" >
+    </video>
+    <script>
+      const player = new Plyr('#my-player');
+    </script>
+  </body>
+</html>

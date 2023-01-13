@@ -52,6 +52,9 @@
                     <li>List item 1</li>
                     </div>
                   </ul>
+                  {% for i in range(context['episodes']) %}
+                  <a href="#">{{i+1}}</a>
+                  {% endfor %}
                 </div>
               </article>
           </div>
