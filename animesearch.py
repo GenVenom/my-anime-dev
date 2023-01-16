@@ -30,8 +30,11 @@ def get_season():
 
 def get_episodes(id):
     episodes = jikan.anime(id)['data']['episodes']
-    return episodes
-
+    if episodes is not None:
+        return episodes
+    else:
+        return 0
+        
 def get_large_image(id):
     image = jikan.anime(id)['data']['images']['jpg']['large_image_url']
     return image
@@ -40,5 +43,10 @@ def get_info_by_id (id):
     synopsis = jikan.anime(id)['data']['synopsis']
     return synopsis
 
+def get_name_by_id (id):
+    title=jikan.anime(id)['data']['title']
+    title = title.replace(' ','-')
+    
+    return title
 def get_download_url(id):
     pass

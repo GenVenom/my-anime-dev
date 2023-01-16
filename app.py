@@ -2,7 +2,7 @@ from flask import Flask , render_template ,redirect,flash,Response
 from animesearch import get_results , get_season, get_info_by_id, get_large_image,get_episodes
 import sqlite3
 import requests
-
+from gogoscraper import get_stream_url
 app = Flask(__name__)
 
 
@@ -32,7 +32,8 @@ def info(id):
     ctx = {
         'img_url' : img_url,
         'synopsis' : synopsis,
-        'episodes': get_episodes(id)
+        'episodes': get_episodes(id),
+        'anime_id': id
         
     }
     
@@ -63,9 +64,10 @@ def unfollow(id):
     conn.close()
     return redirect(f"/#{id}")
 
-@app.route('/video')
-def vide():
-    video_url = 'https://gogodownload.net/download.php?url=aHR0cHM6LyAdeqwrwedffryretgsdFrsftrsvfsfsr8xZGRjazAdrefsdsdfwerFrefdsfrersfdsrfer36343534JhcjBqLmdvY2RuYW5pLmNvbS91c2VyMTM0Mi9jNzUxYmFiMTkzOWEyYjgzMDIwNTY1ZTFhYzI0Mjg5Ni9FUC4xMDQyLnYwLjEwODBwLm1wND90b2tlbj12WDZJanc3cnMtYkVNX28wVnFQN2tBJmV4cGlyZXM9MTY3MzYwNTUyOSZpZD0xOTU0NjU='
+@app.route('/video/<int:anime_id>/<int:ep_id>/')
+async def video(anime_id , ep_id):
+    video_url = await get_stream_url(anime_id , ep_id)
+    print(video_url)
     return render_template("video_player.html",video_feed= video_url)
 
 
