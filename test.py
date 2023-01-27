@@ -8,3 +8,8 @@ episodes = data_soup.find('div',{'class':'anime_video_body'})
 
 ep =episodes.find_all('a')
 print (ep[-1]['ep_end'])
+
+anime_info = data_soup.find('div',{'class':'anime_info_body_bg'})
+title = anime_info.h1.text
+
+print(title)

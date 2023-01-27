@@ -68,7 +68,7 @@
             
             <div class="p-4">
 
-              <a href={{url_for('info',name=i.sanitize_name)}}>
+              <a href={{url_for('info',name=i.sanitize_name())}}>
                 <h3 class="text-lg font-medium text-white overflow-hidden max-h-[52px]">{{i.title}}</h3>
 
               </a>
