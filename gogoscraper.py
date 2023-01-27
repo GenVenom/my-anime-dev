@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup as soup
 import requests
 import re
-from anime import Anime,Anime2
+from anime import Anime
 
 
 
@@ -33,7 +33,7 @@ def get_search_results(anime_name):
         
        
         image = anime.img['src']
-        results.append(Anime2(text,image))
+        results.append(Anime(text,image))
     
     return results
 
@@ -48,7 +48,7 @@ def get_home_page():
         image_url = anime.img['src']
         episodes = anime.find('p',{'class':'episode'}).text.split(' ')[1]
         
-        results.append(Anime2(title,image_url,episodes))
+        results.append(Anime(title,image_url,episodes))
 
     return results
 
@@ -74,8 +74,10 @@ def get_anime_info(name):
     anime_data['genre'] = genre
     anime_data['released'] = anime_info[4].text.split(': ')[1]
     anime_data['status'] = anime_info[5].text.split(':')[1]
-    anime_data['episodes'] = int(data_soup.find('div',{'class':'anime_video_body'}).a['ep_end'])
-
+    episodes  = data_soup.find('div',{'class':'anime_video_body'})
+    eps=episodes.find_all('a')
+    anime_data['episodes'] = int(eps[-1]['ep_end'])
+ 
     return anime_data
 
 def sanitize_name(title):

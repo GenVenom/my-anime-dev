@@ -1,8 +1,7 @@
 from flask import Flask , render_template ,redirect,request , url_for
-
 import sqlite3
 from gogoscraper import get_stream_url , get_search_results ,get_home_page ,get_anime_info
-from anime import Anime
+
 app = Flask(__name__)
 
 
