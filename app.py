@@ -86,6 +86,10 @@ async def video(anime_name , ep_id):
     print(video_url) 
     return render_template("video_player.html",video_feed= video_url)
 
+# not found route 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
