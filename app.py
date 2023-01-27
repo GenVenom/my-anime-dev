@@ -1,77 +1,94 @@
-from flask import Flask , render_template ,redirect,flash,Response
-from animesearch import get_results , get_season, get_info_by_id, get_large_image,get_episodes
+from flask import Flask , render_template ,redirect,request , url_for
+
 import sqlite3
-import requests
-from gogoscraper import get_stream_url
+from gogoscraper import get_stream_url , get_search_results ,get_home_page ,get_anime_info
+from anime import Anime
 app = Flask(__name__)
 
 
+conn = sqlite3.connect('following.db')
+c = conn.cursor()
 
-@app.route('/')
+c.execute ("CREATE TABLE IF NOT EXISTS following (anime_name STRING)")
+conn.commit()
+conn.close()
+
+@app.route('/',methods=['GET','POST'])
 def index():
-    following_list = []
-    conn= sqlite3.connect('following.db')
-    c= conn.cursor()
+    if request.method == "GET":
+        following_list = []
+        conn= sqlite3.connect('following.db')
+        c= conn.cursor()
 
-    c.execute("SELECT * from following")
-    data = c.fetchall()
-    conn.close()
-    for i in data:
-        following_list.append(i[0])
+        c.execute("SELECT * from following")
+        data = c.fetchall()
+        conn.close()
+        for i in data:
+            following_list.append(i[0])
 
-    ctx = {
-        "season" : get_season(),
-        "following_list" : following_list
-    }
-    return render_template("index.html",context=ctx)
-
-@app.route('/info/<int:id>')
-def info(id):
-    synopsis = get_info_by_id(id)
-    img_url = get_large_image(id)
-    ctx = {
-        'img_url' : img_url,
-        'synopsis' : synopsis,
-        'episodes': get_episodes(id),
-        'anime_id': id
         
-    }
+        ctx = {
+            "season" : get_home_page(),
+            "following_list" : following_list
+        }
+        return render_template("index.html",context=ctx)
+    else:
+        query = request.form['search-query']
+        return redirect (url_for('search',query = query))
+
+@app.route('/search/')
+def search():
+    query = request.args.get('query')
+    results = get_search_results(query)
+   
+    return render_template("search.html",results = results)
+
+@app.route('/info/<string:name>')
+def info(name):
+   
+   
+    
+    ctx = get_anime_info(name)
     
 
     return render_template("anime_info.html",context = ctx)
 
-@app.route('/follow/<int:id>')
-def follow(id):
+@app.route('/follow/<string:name>')
+def follow(name):
+    print('called')
     try:
         conn = sqlite3.connect('following.db')
         c = conn.cursor()
 
-        c.execute ("CREATE TABLE IF NOT EXISTS following (anime_id INTEGER PRIMARY KEY)")
-        c.execute("INSERT INTO  following (anime_id) VALUES (?)",(id,))
+        c.execute ("CREATE TABLE IF NOT EXISTS following (anime_name STRING)")
+        c.execute("INSERT INTO  following (anime_name) VALUES (?)",(name,))
         conn.commit()
         conn.close()
-    except:
+    except Exception as e:
+        print(e)
+        
         pass
 
-    return redirect(f"/#{id}")
+    return redirect(f"/#{name}")
 
-@app.route('/unfollow/<int:id>')
-def unfollow(id):
+@app.route('/unfollow/<string:name>')
+def unfollow(name):
+    print(name)
     conn= sqlite3.connect('following.db')
     c = conn.cursor()
-    c.execute("DELETE FROM following WHERE anime_id = ?",(id,))
+    c.execute("DELETE FROM following WHERE anime_name = ?",(name,))
     conn.commit()
     conn.close()
-    return redirect(f"/#{id}")
+    return redirect(f"/#{name}")
 
-@app.route('/video/<int:anime_id>/<int:ep_id>/')
-async def video(anime_id , ep_id):
-    video_url = await get_stream_url(anime_id , ep_id)
-    print(video_url)
+@app.route('/video/<string:anime_name>/<int:ep_id>')
+async def video(anime_name , ep_id):
+    video_url = get_stream_url(anime_name, ep_id)
+    print(video_url) 
     return render_template("video_player.html",video_feed= video_url)
 
 
 if __name__ == "__main__":
-    app.run(debug=True,port=8000)
+    app.run(debug=True)
 
 

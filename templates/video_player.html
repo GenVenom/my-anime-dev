@@ -1,15 +1,14 @@
-<!DOCTYPE html>
 <html>
   <head>
-    <link href="https://cdn.plyr.io/3.6.2/plyr.css" rel="stylesheet">
-    <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+    <title> Vide</title>
   </head>
   <body>
-    <video id="my-player" controls>
-      <source src="{{video_feed}}" type="video/mp4" >
-    </video>
-    <script>
-      const player = new Plyr('#my-player');
-    </script>
+    
+    <div class="anime_video_body_watch_items load">
+    <div class="play-video">
+        <iframe src="{{video_feed}}" widht= 500 height= 500 allowfullscreen="true"></iframe>
+    </div>
+</div>
+
   </body>
 </html>

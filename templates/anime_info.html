@@ -26,11 +26,11 @@
                 <div class='flex justify-between items-center'>
                     <a href="#">
                         <h3 class="mt-0.5 text-lg text-gray-900">
-                          Name
+                          {{context['title']}}
                         </h3>
                       </a>
 
-                      <p>Rating : 6.9</p>
+                      <p>{{context['status']}}</p>
                 </div>
               
                   <p class="mt-2 mb-2 text-sm leading-relaxed text-gray-500 line-clamp-3">
@@ -45,16 +45,16 @@
                         Genre:
                       </h3>
                     <div class='flex gap-5'>
-                        <li>List item 1</li>
-                    <li>List item 1</li>
-                    <li>List item 1</li>
-                    <li>List item 1</li>
-                    <li>List item 1</li>
+                      {{context['genre']}}
                     </div>
                   </ul>
-                  {% for i in range(context['episodes']) %}
-                  <a href={{url_for('video',anime_id=context['anime_id'],ep_id=i)}}>{{i+1}}</a>
+                  <div>
+                  {% for i in range(1,context['episodes']+1) %}
+                  <a href={{url_for('video',anime_name= context['title'],ep_id=i)}}>
+                  {{i}}
+                  </a>
                   {% endfor %}
+                  </div>
                 </div>
               </article>
           </div>

@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>
+            Search
+        </title>
+    </head>
+    <body>
+        <div class="grid content-center justify-items-center w-screen max-w-[95%] lg:max-w-[1200px] mx-auto">
+      <div class="grid lg:grid-cols-4 gap-10 grid-cols-2">
+        {% for result in results %}
+        
+        <div id= {result.title}} class="lg:w-[250px] w-[400px] border border-gray-600 h-auto shadow-xl bg-[#100c08]">
+          <article class="group">
+            <img
+              alt="Lava"
+              src="{{result.img_url}}"
+              class="h-56 w-full object-cover shadow-xl transition group-hover:grayscale-[50%]"
+            />
+            
+            <div class="p-4">
+
+              <a href={{url_for ('info',name=result.sanitize_name())}}>
+                <h3 class="text-lg font-medium text-white overflow-hidden max-h-[52px]">{{result.title}}</h3>
+
+              </a>
+
+              <div class='flex justify-between items-center pt-2'>
+                
+              
+              </div>
+              
+            </div>
+            
+          </article>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+        
+    </body>
+</html>
