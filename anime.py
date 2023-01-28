@@ -1,9 +1,12 @@
+import re
+
 class Anime:
-    def __init__(self,title,episodes,image_url,english_title,rating):
+    def __init__ (self,title,img_url,episodes=None,synopsis = None):
         self.title = title
         self.episodes = episodes
-        self.image_url = image_url
-        self.english_title = english_title
-        self.rating = rating
-        
-
+        self.img_url = img_url
+        self.synopsis = synopsis
+    
+    def sanitize_name(self):
+        title = re.sub(r'[^\w\s]', '', self.title).lower().replace(" ","-").strip()
+        return title
