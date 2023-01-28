@@ -11,19 +11,29 @@
         {% extends "navbar.html" %} {% block content %}
       </div>
     </div>
+    {% include "search_bar.html" %}
     
     <div class='text-white flex flex-col items-center justify-center text-left
       gap-4 mt-4'>
       <h1 class="text-[#b3aca2]">Watching {{context['anime_name']}} Episode: {{context['ep_id']}}</h1>
+      {% for i in range (1,context['ep_id']+1) %}
+      {{i}}
+      {% endfor %}
+      <br>
+      {%  for i in range (context['ep_id'] , context['episodes']+1) %}
+      {{i}}
+      {% endfor %}
     </div>
 
     <div class="anime_video_body_watch_items load flex items-center
       justify-center p-10">
       <div class="play-video">
-        <iframe src="{{context['video_feed']}}" class="w-[1280px] h-[740px] border-4
+        <iframe src="//gembedhd.com/streaming.php?id=MTkzMTQ5&title=Boku+no+Hero+Academia+6th+Season+Episode+1" class="w-[1280px] h-[740px] border-4
           border-orange-600 overflow-hidden" allowfullscreen="true"></iframe>
       </div>
+      
     </div>
+    
     {% endblock %}
   </body>
 </html>

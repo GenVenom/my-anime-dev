@@ -35,21 +35,32 @@ def index():
         query = request.form['search-query']
         return redirect (url_for('search',query = query))
 
-@app.route('/search/')
-def search():
-    query = request.args.get('query')
+# FIX URL NAME NOT CHANGING WHEN SEARCHED FROM SEARCH PAGE!
+@app.route('/search/<string:query>',methods=['GET','POST'])
+def search(query):
+    if request.method != "GET":
+        query = request.form['search-query']
+    
+   
     results = get_search_results(query)
     if not results:
-        return render_template("404.html")
+        abort(404)   
     return render_template("search.html",results = results,search_name = query)
-
-@app.route('/info/<string:name>')
+        
+@app.route('/info/<string:name>',methods=['GET','POST'])
 def info(name):
-    try:
-        ctx = get_anime_info(name)
-        return render_template("anime_info.html",context = ctx)
-    except AttributeError:
-        abort(404)
+    name = name.strip()
+    if request.method !="POST":
+        try:
+            ctx = get_anime_info(name)
+            return render_template("anime_info.html",context = ctx)
+        except AttributeError:
+            abort(404)
+    else:
+        query = request.form['search-query']
+        return redirect (url_for('search',query = query))
+        
+
 @app.route('/follow/<string:name>')
 def follow(name):
     
@@ -78,16 +89,23 @@ def unfollow(name):
     conn.close()
     return redirect(f"/#{name}")
 
-@app.route('/video/<string:anime_name>/<int:ep_id>')
+@app.route('/video/<string:anime_name>/<int:ep_id>',methods=['GET','POST'])
 def video(anime_name , ep_id):
-    video_url = get_stream_url(anime_name, ep_id)
-    context = {
-        'video_feed':video_url,
-        'anime_name': anime_name,
-        'ep_id':ep_id
-    }
-    return render_template("video_player.html",context=context)
-
+    
+    if request.method != "POST":
+        video_url,episodes = get_stream_url(anime_name, ep_id)
+        
+        context = {
+            'video_feed':video_url,
+            'anime_name': anime_name,
+            'ep_id':ep_id,
+            'episodes' : episodes
+        }
+        return render_template("video_player.html",context=context)
+    else:
+        query = request.form['search-query']
+        
+        return redirect (url_for('search',query = query))
 
 @app.errorhandler(404)
 def not_found(e):

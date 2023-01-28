@@ -15,7 +15,11 @@ def get_stream_url(anime_name, ep_id):
     data_soup = soup(data_html.text,"html.parser")
 
     link = data_soup.find('iframe')
-    return link['src']
+    episodes  = data_soup.find('ul',{'id':'episode_page'})
+    eps=episodes.find_all('a')
+    eps = int(eps[-1]['ep_end'])
+    
+    return (link['src'].strip(),eps)
    
 
 def get_search_results(anime_name):
@@ -54,7 +58,7 @@ def get_home_page():
 
 def get_anime_info(name):
     anime_data = {}
-    
+    name= name.strip()
     url = f"https://www1.gogoanime.bid/category/{name}"
     data_html = requests.get(url)
     data_soup = soup(data_html.text,"html.parser")
