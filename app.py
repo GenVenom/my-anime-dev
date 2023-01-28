@@ -39,8 +39,9 @@ def index():
 def search():
     query = request.args.get('query')
     results = get_search_results(query)
-   
-    return render_template("search.html",results = results)
+    if not results:
+        return render_template("404.html")
+    return render_template("search.html",results = results,search_name = query)
 
 @app.route('/info/<string:name>')
 def info(name):
@@ -83,9 +84,14 @@ def unfollow(name):
 @app.route('/video/<string:anime_name>/<int:ep_id>')
 def video(anime_name , ep_id):
     video_url = get_stream_url(anime_name, ep_id)
+    anime_name = anime_name.replace('-',' ')
     print(video_url) 
-    return render_template("video_player.html",video_feed= video_url)
+    return render_template("video_player.html",video_feed= video_url,anime_title = anime_name,episode_id = ep_id)
 
+# not found route 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
