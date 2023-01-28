@@ -1,4 +1,4 @@
-from flask import Flask , render_template ,redirect,request , url_for
+from flask import Flask , render_template ,redirect,request , url_for,abort
 import sqlite3
 from gogoscraper import get_stream_url , get_search_results ,get_home_page ,get_anime_info
 
@@ -45,17 +45,14 @@ def search():
 
 @app.route('/info/<string:name>')
 def info(name):
-   
-   
-    
-    ctx = get_anime_info(name)
-    
-
-    return render_template("anime_info.html",context = ctx)
-
+    try:
+        ctx = get_anime_info(name)
+        return render_template("anime_info.html",context = ctx)
+    except AttributeError:
+        abort(404)
 @app.route('/follow/<string:name>')
 def follow(name):
-    print('called')
+    
     try:
         conn = sqlite3.connect('following.db')
         c = conn.cursor()
@@ -73,7 +70,7 @@ def follow(name):
 
 @app.route('/unfollow/<string:name>')
 def unfollow(name):
-    print(name)
+    
     conn= sqlite3.connect('following.db')
     c = conn.cursor()
     c.execute("DELETE FROM following WHERE anime_name = ?",(name,))
@@ -91,10 +88,10 @@ def video(anime_name , ep_id):
     }
     return render_template("video_player.html",context=context)
 
-# # not found route 
-# @app.errorhandler(404)
-# def not_found(e):
-#     return render_template("404.html")
+
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -8,7 +8,7 @@ from anime import Anime
 
 def get_stream_url(anime_name, ep_id):
     anime_name = sanitize_name(anime_name)
-    
+    print(anime_name)
     url = f"https://www1.gogoanime.bid/{anime_name}-episode-{ep_id}"
     
     data_html = requests.get(url)
@@ -54,6 +54,7 @@ def get_home_page():
 
 def get_anime_info(name):
     anime_data = {}
+    
     url = f"https://www1.gogoanime.bid/category/{name}"
     data_html = requests.get(url)
     data_soup = soup(data_html.text,"html.parser")
@@ -82,5 +83,6 @@ def get_anime_info(name):
 
 def sanitize_name(title):
         
-        title = re.sub(r'[^\n\w\s\n]', '', title).lower().replace(" ","-")
+        title =  re.sub(r'[^a-zA-Z0-9\s\-]', '', title).lower().replace(" ","-")
+        print(title)
         return title

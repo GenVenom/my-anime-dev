@@ -8,5 +8,6 @@ class Anime:
         self.synopsis = synopsis
     
     def sanitize_name(self):
-        title = re.sub(r'[^\w\s]', '', self.title).lower().replace(" ","-").strip()
+        
+        title =  re.sub(r'[^a-zA-Z0-9\s\-]', '', self.title).lower().replace(" ","-")
         return title
