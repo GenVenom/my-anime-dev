@@ -81,7 +81,7 @@ def unfollow(name):
     return redirect(f"/#{name}")
 
 @app.route('/video/<string:anime_name>/<int:ep_id>')
-async def video(anime_name , ep_id):
+def video(anime_name , ep_id):
     video_url = get_stream_url(anime_name, ep_id)
     print(video_url) 
     return render_template("video_player.html",video_feed= video_url)
