@@ -84,14 +84,17 @@ def unfollow(name):
 @app.route('/video/<string:anime_name>/<int:ep_id>')
 def video(anime_name , ep_id):
     video_url = get_stream_url(anime_name, ep_id)
-    anime_name = anime_name.replace('-',' ')
-    print(video_url) 
-    return render_template("video_player.html",video_feed= video_url,anime_title = anime_name,episode_id = ep_id)
+    context = {
+        'video_feed':video_url,
+        'anime_name': anime_name,
+        'ep_id':ep_id
+    }
+    return render_template("video_player.html",context=context)
 
-# not found route 
-@app.errorhandler(404)
-def not_found(e):
-    return render_template("404.html")
+# # not found route 
+# @app.errorhandler(404)
+# def not_found(e):
+#     return render_template("404.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

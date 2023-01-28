@@ -8,19 +8,19 @@
   <body class='bg-black'>
     <div class=' flex items-center justify-center max-w-[1200px] mx-auto'>
       <div class='w-full'>
-        {% extends "./navbar.html" %} {% block content %}
+        {% extends "navbar.html" %} {% block content %}
       </div>
     </div>
     
     <div class='text-white flex flex-col items-center justify-center text-left
       gap-4 mt-4'>
-      <h1 class="text-[#b3aca2]">Watching {{anime_title}} Episode: {{episode_id}}</h1>
+      <h1 class="text-[#b3aca2]">Watching {{context['anime_title']}} Episode: {{context['ep_id']}}</h1>
     </div>
 
     <div class="anime_video_body_watch_items load flex items-center
       justify-center p-10">
       <div class="play-video">
-        <iframe src="{{video_feed}}" class="w-[1280px] h-[740px] border-4
+        <iframe src="{{context['video_feed']}}" class="w-[1280px] h-[740px] border-4
           border-orange-600 overflow-hidden" allowfullscreen="true"></iframe>
       </div>
     </div>

@@ -8,9 +8,9 @@ from anime import Anime
 
 def get_stream_url(anime_name, ep_id):
     anime_name = sanitize_name(anime_name)
-    print(anime_name)
+    
     url = f"https://www1.gogoanime.bid/{anime_name}-episode-{ep_id}"
-    print(url)
+    
     data_html = requests.get(url)
     data_soup = soup(data_html.text,"html.parser")
 
