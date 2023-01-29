@@ -38,8 +38,6 @@
               </div>
               </a>
             {% endfor %}
-            </div>
-            <div class='grid grid-cols-12 gap-6'>
             {%  for i in range (context['ep_id']+1 , context['episodes']+1) %}
             <a href={{url_for('video',anime_name= context['anime_name'],ep_id=i)}}>
               <div>
