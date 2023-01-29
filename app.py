@@ -66,15 +66,14 @@ def info(name):
 @app.route('/follow/<string:name>')
 def follow(name):
     name = name.strip()
-    img_url = get_anime_info(sanitize_name(name))['img_url']
     
     try:
+        img_url = get_anime_info(sanitize_name(name))['img_url']
         follow_anime(name,img_url)
+    except AttributeError:
+        abort(404)
         
-    except Exception as e:
-        print(e)
         
-        pass
     if request.referrer == "http://127.0.0.1:5000":
         return redirect(f"/#{sanitize_name(name)}")
     else:
@@ -118,9 +117,9 @@ def following():
         
     return render_template("following.html",following_list= following_list)
 
-# @app.errorhandler(404)
-# def not_found(e):
-#     return render_template("404.html")
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
