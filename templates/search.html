@@ -4,14 +4,15 @@
             Search
         </title>  
         <script>
-          if
+          
         </script>
     </head>
     <body class='bg-black '>
 
       <div class=' flex items-center justify-center max-w-[1200px] mx-auto'>
         <div class='w-full'> 
-          {% extends "./navbar.html" %} {% block content %}
+          {% extends "navbar.html" %} {% block content %}
+          {{following_list}}
         </div>
       </div>
         {% include "search_bar.html" %}
@@ -25,6 +26,7 @@
       <div class="grid content-center justify-items-center w-screen max-w-[95%] lg:max-w-[1200px] mx-auto pb-8">
         <div class="grid lg:grid-cols-4 gap-10 grid-cols-2">
           {% for result in results %}
+          
         <div id= {result.title} class="results lg:w-[250px] w-[400px] border border-gray-600 h-auto shadow-xl hover:scale-110 transition-all ease-in-out duration-300 mt-5 hover:rounded-xl bg-[#18191a]">
           <article class="group">
             <img
@@ -40,11 +42,6 @@
 
               </a>
 
-              <div class='flex justify-between items-center pt-2'>
-                <a href=#
-                class="button mt-2 text-sm font-medium text-orange-500 hover:text-orange-400">Unfollow</a>
-              
-              </div>
               
             </div>
             

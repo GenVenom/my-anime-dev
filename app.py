@@ -15,11 +15,10 @@ conn.close()
 
 @app.route('/',methods=['GET','POST'])
 def index():
-    following_list = []
+    
     if request.method == "GET":
-        data = get_following_list()
-        for i in data:
-            following_list.append(i[0])
+        following_list = get_following_list()
+        
 
         ctx = {
             "season" : get_home_page(),
@@ -33,17 +32,22 @@ def index():
 # FIX URL NAME NOT CHANGING WHEN SEARCHED FROM SEARCH PAGE!
 @app.route('/search/<string:query>',methods=['GET','POST'])
 def search(query):
+    following_list = get_following_list()
+    
     if request.method != "GET":
         query = request.form['search-query']
     
    
     results = get_search_results(query)
+    
     if not results:
         abort(404)   
-    return render_template("search.html",results = results,search_name = query)
+    
+    return render_template("search.html",results = results,search_name = query,following_list = following_list)
         
 @app.route('/info/<string:name>',methods=['GET','POST'])
 def info(name):
+    following_list = get_following_list()
     last_watched_ep = get_last_watched_ep(name)
     name = sanitize_name(name)
     name = name.strip()
@@ -51,7 +55,7 @@ def info(name):
         try:
             ctx = get_anime_info(name)
             ctx['last_watched_ep'] = last_watched_ep
-            return render_template("anime_info.html",context = ctx)
+            return render_template("anime_info.html",context = ctx,following_list= following_list)
         except AttributeError:
             abort(404)
     else:
@@ -61,6 +65,7 @@ def info(name):
 
 @app.route('/follow/<string:name>')
 def follow(name):
+    name = name.strip()
     img_url = get_anime_info(sanitize_name(name))['img_url']
     
     try:
@@ -70,14 +75,19 @@ def follow(name):
         print(e)
         
         pass
-
-    return redirect(f"/#{sanitize_name(name)}")
+    if request.referrer == "http://127.0.0.1:5000":
+        return redirect(f"/#{sanitize_name(name)}")
+    else:
+        return redirect(request.referrer)
 
 @app.route('/unfollow/<string:name>')
 def unfollow(name):
-    
+    print(request.referrer)
     unfollow_anime(name)
-    return redirect(f"/#{sanitize_name(name)}")
+    if request.referrer == "http://127.0.0.1:5000/":
+        return redirect(f"/#{sanitize_name(name)}")
+    else:
+        return redirect(request.referrer)
 
 @app.route('/video/<string:anime_name>/<int:ep_id>',methods=['GET','POST'])
 def video(anime_name , ep_id):
@@ -99,14 +109,18 @@ def video(anime_name , ep_id):
         
         return redirect (url_for('search',query = query))
 
-@app.route('/following')
+@app.route('/following',methods=['GET','POST'])
 def following():
     following_list= get_following_anime()
+    if request.method !="GET":
+        query= request.form['search-query']
+        return redirect(url_for('search',query = query))
+        
     return render_template("following.html",following_list= following_list)
 
-@app.errorhandler(404)
-def not_found(e):
-    return render_template("404.html")
+# @app.errorhandler(404)
+# def not_found(e):
+#     return render_template("404.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

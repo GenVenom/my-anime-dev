@@ -38,6 +38,7 @@
                 Episodes: {{i.episodes}}
 
               </p>
+              
               {% if i.title not in context['following_list'] %}
               <a href={{url_for ('follow',name=i.title)}}
                 class="button mt-2 text-sm font-medium text-orange-500 hover:text-orange-400">Follow</a>

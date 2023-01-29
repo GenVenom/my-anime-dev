@@ -13,14 +13,17 @@ def follow_anime(name,img_url):
     conn.close()
 
 def get_following_list():
-    
+    following_list = []
     conn= sqlite3.connect('following.db')
     c= conn.cursor()
 
-    c.execute("SELECT * from following")
+    c.execute("SELECT anime_name FROM following")
     data = c.fetchall()
-    conn.close()
-    return data
+    for anime in data:
+        following_list.append(anime[0])
+    return following_list
+    
+    
 
 def unfollow_anime(name):
     conn= sqlite3.connect('following.db')

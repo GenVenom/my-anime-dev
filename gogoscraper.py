@@ -61,6 +61,7 @@ def get_anime_info(name):
     anime_data = {}
     name= name.strip()
     url = f"https://www1.gogoanime.bid/category/{name}"
+    print(url)
     data_html = requests.get(url)
     data_soup = soup(data_html.text,"html.parser")
 
@@ -83,13 +84,13 @@ def get_anime_info(name):
     episodes  = data_soup.find('div',{'class':'anime_video_body'})
     eps=episodes.find_all('a')
     anime_data['episodes'] = int(eps[-1]['ep_end'])
- 
+    print(anime_data)
     return anime_data
 
 def sanitize_name(title):
         
         title =  re.sub(r'[^a-zA-Z0-9\s\-]', '', title).lower().replace(" ","-")
-        
+        print(title)
         return title
 
 
