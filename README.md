@@ -15,7 +15,7 @@ This is a Flask web app that lets you watch and keep track of your favorite anim
 * [Python 3.11](https://www.python.org/downloads/)
 * Flask
 * SQLite3
-* GoGoAnime API wrapper (gogoscraper)
+* BeautifulSoup4
 
 ## Installation
 
