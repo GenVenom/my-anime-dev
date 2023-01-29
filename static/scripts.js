@@ -14,7 +14,7 @@ for (let i = 0; i < episodeArray.length; i += chunks) {
 const pages = chunkArray.length;
 for (let i = 0; i < pages; i++) {
   const page = document.createElement("li");
-  page.innerHTML = `<a class="page-link focus:bg-orange-500 relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300 rounded hover:text-orange-500 hover:bg-gray-200 focus:shadow-none">${
+  page.innerHTML = `<a class="page-link focus:bg-orange-500 relative block py-1.5 px-3 cursor-pointer rounded border-0 bg-transparent outline-none transition-all duration-300 rounded hover:text-orange-500 hover:bg-gray-200 focus:shadow-none">${
     i + 1
   }</a>`;
   document.getElementsByClassName("page-item-number")[0].appendChild(page);
