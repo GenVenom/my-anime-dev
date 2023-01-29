@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Following</title>
+    </head>
+    <body>
+        {% extends "navbar.html" %}
+        {% block content %}
+        <h1> Following</h1>
+        {% for anime in following_list %}
+        <img src="{{anime.img_url}}">
+        {{anime.title}} - {{anime.watched_ep}}
+
+        {%  endfor %}
+        {% endblock content %}
+    </body>
+</html>

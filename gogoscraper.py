@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as soup
 import requests
 import re
 from anime import Anime
-
+import sqlite3
 
 
 
@@ -57,6 +57,7 @@ def get_home_page():
     return results
 
 def get_anime_info(name):
+    
     anime_data = {}
     name= name.strip()
     url = f"https://www1.gogoanime.bid/category/{name}"
@@ -88,5 +89,7 @@ def get_anime_info(name):
 def sanitize_name(title):
         
         title =  re.sub(r'[^a-zA-Z0-9\s\-]', '', title).lower().replace(" ","-")
-        print(title)
+        
         return title
+
+

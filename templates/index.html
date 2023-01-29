@@ -27,7 +27,7 @@
 
           <div class="p-4">
 
-            <a href={{url_for('info',name=i.sanitize_name())}}>
+            <a href={{url_for('info',name=i.title)}}>
               <h3 class="text-lg font-medium text-white overflow-hidden max-h-[52px]">{{i.title}}</h3>
 
             </a>
@@ -38,12 +38,12 @@
                 Episodes: {{i.episodes}}
 
               </p>
-              {% if i.sanitize_name() not in context['following_list'] %}
-              <a href={{url_for ('follow',name=i.sanitize_name()) }}
+              {% if i.title not in context['following_list'] %}
+              <a href={{url_for ('follow',name=i.title)}}
                 class="button mt-2 text-sm font-medium text-orange-500 hover:text-orange-400">Follow</a>
               {% else %}
 
-              <a href={{url_for ('unfollow',name=i.sanitize_name())}}
+              <a href={{url_for ('unfollow',name=i.title)}}
                 class="button mt-2 text-sm font-medium text-orange-500 hover:text-orange-400">Unfollow</a>
 
 

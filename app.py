@@ -1,6 +1,7 @@
 from flask import Flask , render_template ,redirect,request , url_for,abort
 import sqlite3
-from gogoscraper import get_stream_url , get_search_results ,get_home_page ,get_anime_info
+from gogoscraper import *
+from dbhandler import *
 
 app = Flask(__name__)
 
@@ -8,24 +9,18 @@ app = Flask(__name__)
 conn = sqlite3.connect('following.db')
 c = conn.cursor()
 
-c.execute ("CREATE TABLE IF NOT EXISTS following (anime_name STRING)")
+c.execute ("CREATE TABLE IF NOT EXISTS following (anime_name STRING,img_url TEXT,watched_ep INT)")
 conn.commit()
 conn.close()
 
 @app.route('/',methods=['GET','POST'])
 def index():
+    following_list = []
     if request.method == "GET":
-        following_list = []
-        conn= sqlite3.connect('following.db')
-        c= conn.cursor()
-
-        c.execute("SELECT * from following")
-        data = c.fetchall()
-        conn.close()
+        data = get_following_list()
         for i in data:
             following_list.append(i[0])
 
-        
         ctx = {
             "season" : get_home_page(),
             "following_list" : following_list
@@ -49,6 +44,8 @@ def search(query):
         
 @app.route('/info/<string:name>',methods=['GET','POST'])
 def info(name):
+    
+    name = sanitize_name(name)
     name = name.strip()
     if request.method !="POST":
         try:
@@ -63,42 +60,35 @@ def info(name):
 
 @app.route('/follow/<string:name>')
 def follow(name):
+    img_url = get_anime_info(sanitize_name(name))['img_url']
     
     try:
-        conn = sqlite3.connect('following.db')
-        c = conn.cursor()
-
-        c.execute ("CREATE TABLE IF NOT EXISTS following (anime_name STRING)")
-        c.execute("INSERT INTO  following (anime_name) VALUES (?)",(name,))
-        conn.commit()
-        conn.close()
+        follow_anime(name,img_url)
+        
     except Exception as e:
         print(e)
         
         pass
 
-    return redirect(f"/#{name}")
+    return redirect(f"/#{sanitize_name(name)}")
 
 @app.route('/unfollow/<string:name>')
 def unfollow(name):
     
-    conn= sqlite3.connect('following.db')
-    c = conn.cursor()
-    c.execute("DELETE FROM following WHERE anime_name = ?",(name,))
-    conn.commit()
-    conn.close()
-    return redirect(f"/#{name}")
+    unfollow_anime(name)
+    return redirect(f"/#{sanitize_name(name)}")
 
 @app.route('/video/<string:anime_name>/<int:ep_id>',methods=['GET','POST'])
 def video(anime_name , ep_id):
     
     if request.method != "POST":
-        video_url,episodes = get_stream_url(anime_name, ep_id)
         
+        video_url,episodes = get_stream_url(anime_name, ep_id)
+        update_watched_ep(anime_name,ep_id)
         context = {
             'video_feed':video_url,
             'anime_name': anime_name,
-            'ep_id':ep_id,
+            'ep_id':get_last_watched_ep(anime_name),
             'episodes' : episodes
         }
         return render_template("video_player.html",context=context)
@@ -106,6 +96,11 @@ def video(anime_name , ep_id):
         query = request.form['search-query']
         
         return redirect (url_for('search',query = query))
+
+@app.route('/following')
+def following():
+    following_list= get_following_anime()
+    return render_template("following.html",following_list= following_list)
 
 @app.errorhandler(404)
 def not_found(e):
