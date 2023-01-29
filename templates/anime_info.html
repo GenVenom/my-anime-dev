@@ -71,21 +71,28 @@
               </nav>
             </div>
 
-            <div class='grid grid-cols-6 '>
-              {% for i in range(1,context['episodes']+1)%}
-              <a href={{url_for('video',anime_name= context['title'],ep_id=i)}} class="episodes">
-                <div>
-                  <button class='bg-[#18191a] group text-white p-2 rounded-xl
-                    hover:bg-orange-400 hover:text-black transition-all
-                    ease-in-out duration-400'>
-                    <span class='font-bold'>Episode</span> <span
-                      class='text-orange-500 group-hover:text-white'>{{i}}</span>
-                  </button>
-                </div>
-              </a>
-              {% endfor %}
-            </div>
-            
+            <div class='flex flex-col items-center justify-center p-6'>
+              <div class='grid grid-cols-12 gap-6 '>
+                {% for i in range (1,context['last_watched_ep']+1) %}
+                  <a href={{url_for('video',anime_name= context['title'],ep_id=i)}} class="episodes">
+                    <div>
+                      <button class='bg-black group text-white p-2 w-[60px] rounded-xl hover:bg-orange-400 hover:text-black transition-all ease-in-out duration-400'>
+                     <span class='text-gray-500 group-hover:text-white'>{{i}}</span>
+                      </button>
+                    </div>
+                    </a>
+                  {% endfor %}
+                  {%  for i in range (context['last_watched_ep']+1 , context['episodes']+1) %}
+                  <a href={{url_for('video',anime_name= context['title'],ep_id=i)}} class="episodes">
+                    <div>
+                      <button class='bg-[#18191a] group text-white w-[60px] p-2 rounded-xl hover:bg-orange-400 hover:text-black transition-all ease-in-out duration-400'>
+                      <span class='text-orange-500 group-hover:text-white'>{{i}}</span>
+                      </button>
+                    </div>
+                    </a>
+                  {% endfor %}
+                  </div>
+          </div>
           </div>
         </article>
       </div>
