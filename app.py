@@ -89,7 +89,8 @@ def video(anime_name , ep_id):
             'video_feed':video_url,
             'anime_name': anime_name,
             'ep_id':get_last_watched_ep(anime_name),
-            'episodes' : episodes
+            'episodes' : episodes,
+            'cur_ep_id' : ep_id
         }
         return render_template("video_player.html",context=context)
     else:
