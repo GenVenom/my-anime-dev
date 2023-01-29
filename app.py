@@ -44,12 +44,13 @@ def search(query):
         
 @app.route('/info/<string:name>',methods=['GET','POST'])
 def info(name):
-    
+    last_watched_ep = get_last_watched_ep(name)
     name = sanitize_name(name)
     name = name.strip()
     if request.method !="POST":
         try:
             ctx = get_anime_info(name)
+            ctx['last_watched_ep'] = last_watched_ep
             return render_template("anime_info.html",context = ctx)
         except AttributeError:
             abort(404)

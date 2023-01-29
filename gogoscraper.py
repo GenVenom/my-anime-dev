@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup as soup
 import requests
 import re
 from anime import Anime
-import sqlite3
+
 
 
 
@@ -52,7 +52,7 @@ def get_home_page():
         image_url = anime.img['src']
         episodes = anime.find('p',{'class':'episode'}).text.split(' ')[1]
         
-        results.append(Anime(title,image_url,episodes))
+        results.append(Anime(title,image_url,0,episodes))
 
     return results
 
